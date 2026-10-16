@@ -1,0 +1,82 @@
+digraph RaceDay {
+  graph [rankdir=TB, fontname="Helvetica", labelloc=t, fontsize=20, pad=0.4, nodesep=0.7, ranksep=1.0,
+         label="RaceDay - Entity Relationship Diagram (PK = primary key, FK = foreign key, UQ = unique)"];
+  node  [shape=plain, fontname="Helvetica", fontsize=11];
+  edge  [fontname="Helvetica", fontsize=10, dir=both, arrowtail=tee, arrowhead=crowtee, color="#334155", penwidth=1.4];
+
+  Roles [label=<
+   <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+    <TR><TD COLSPAN="3" BGCOLOR="#1e3a8a"><FONT COLOR="white"><B>Roles</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">RoleId</TD><TD ALIGN="LEFT">INT, identity</TD></TR>
+    <TR><TD ALIGN="LEFT">UQ</TD><TD ALIGN="LEFT">RoleName</TD><TD ALIGN="LEFT">NVARCHAR(50)</TD></TR>
+   </TABLE>>];
+
+  Users [label=<
+   <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+    <TR><TD COLSPAN="3" BGCOLOR="#1e3a8a"><FONT COLOR="white"><B>Users</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">UserId</TD><TD ALIGN="LEFT">INT, identity</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">FirstName</TD><TD ALIGN="LEFT">NVARCHAR(100)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">LastName</TD><TD ALIGN="LEFT">NVARCHAR(100)</TD></TR>
+    <TR><TD ALIGN="LEFT">UQ</TD><TD ALIGN="LEFT">Email</TD><TD ALIGN="LEFT">NVARCHAR(256)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">PasswordHash</TD><TD ALIGN="LEFT">NVARCHAR(255)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">PhoneNumber</TD><TD ALIGN="LEFT">NVARCHAR(20), null</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">DateOfBirth</TD><TD ALIGN="LEFT">DATE, null</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">RoleId</TD><TD ALIGN="LEFT">INT</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">CreatedAt</TD><TD ALIGN="LEFT">DATETIME2, default</TD></TR>
+   </TABLE>>];
+
+  Events [label=<
+   <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+    <TR><TD COLSPAN="3" BGCOLOR="#1e3a8a"><FONT COLOR="white"><B>Events</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">EventId</TD><TD ALIGN="LEFT">INT, identity</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">Name</TD><TD ALIGN="LEFT">NVARCHAR(150)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">Description</TD><TD ALIGN="LEFT">NVARCHAR(1000)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">EventDate</TD><TD ALIGN="LEFT">DATETIME2</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">Location</TD><TD ALIGN="LEFT">NVARCHAR(200)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">DistanceKm</TD><TD ALIGN="LEFT">DECIMAL(6,2)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">EventType</TD><TD ALIGN="LEFT">Run | Walk | Cycle</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">OrganiserId</TD><TD ALIGN="LEFT">INT (to Users)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">CreatedAt</TD><TD ALIGN="LEFT">DATETIME2, default</TD></TR>
+   </TABLE>>];
+
+  Categories [label=<
+   <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+    <TR><TD COLSPAN="3" BGCOLOR="#1e3a8a"><FONT COLOR="white"><B>Categories</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">CategoryId</TD><TD ALIGN="LEFT">INT, identity</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">EventId</TD><TD ALIGN="LEFT">INT</TD></TR>
+    <TR><TD ALIGN="LEFT">UQ</TD><TD ALIGN="LEFT">Name (per event)</TD><TD ALIGN="LEFT">NVARCHAR(100)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">MinAge</TD><TD ALIGN="LEFT">INT, null</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">MaxAge</TD><TD ALIGN="LEFT">INT, null</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">DistanceKm</TD><TD ALIGN="LEFT">DECIMAL(6,2), null</TD></TR>
+   </TABLE>>];
+
+  Enrolments [label=<
+   <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+    <TR><TD COLSPAN="3" BGCOLOR="#1e3a8a"><FONT COLOR="white"><B>Enrolments</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">EnrolmentId</TD><TD ALIGN="LEFT">INT, identity</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">UserId (Participant)</TD><TD ALIGN="LEFT">INT</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">EventId</TD><TD ALIGN="LEFT">INT</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">CategoryId</TD><TD ALIGN="LEFT">INT</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">EnrolledAt</TD><TD ALIGN="LEFT">DATETIME2, default</TD></TR>
+    <TR><TD COLSPAN="3" ALIGN="LEFT"><I>UQ (UserId, EventId)</I></TD></TR>
+   </TABLE>>];
+
+  Results [label=<
+   <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+    <TR><TD COLSPAN="3" BGCOLOR="#1e3a8a"><FONT COLOR="white"><B>Results</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">ResultId</TD><TD ALIGN="LEFT">INT, identity</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B>, UQ</TD><TD ALIGN="LEFT">EnrolmentId</TD><TD ALIGN="LEFT">INT</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">FinishTime</TD><TD ALIGN="LEFT">TIME(0)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">Position</TD><TD ALIGN="LEFT">INT (&gt; 0)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">RecordedAt</TD><TD ALIGN="LEFT">DATETIME2, default</TD></TR>
+   </TABLE>>];
+
+  // one --- many  (tee = "one" end, crow = "many" end)
+  Roles      -> Users      [label="1 : N\nhas"];
+  Users      -> Events     [label="1 : N\norganises"];
+  Users      -> Enrolments [label="1 : N\nenters"];
+  Events     -> Categories [label="1 : N\ndefines"];
+  Events     -> Enrolments [label="1 : N\nreceives"];
+  Categories -> Enrolments [label="1 : N\nchosen in"];
+  Enrolments -> Results    [label="1 : 0..1\nproduces", arrowhead=teeodot];
+}
